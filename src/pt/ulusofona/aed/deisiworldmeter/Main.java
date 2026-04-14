@@ -61,7 +61,9 @@ public class Main {
             linhaAtual++;
 
             // Ignorar cabeçalho
-            if (linhaAtual == 1) continue;
+            if (linhaAtual == 1) {
+                continue;
+            }
 
             String[] partes = linha.split(",");
 
@@ -81,11 +83,15 @@ public class Main {
                 nLinhasOK++;
             } else {
                 nLinhasNOK++;
-                if (primeiraNOK == -1) primeiraNOK = linhaAtual;
+                if (primeiraNOK == -1){
+                    primeiraNOK = linhaAtual;
+                }
             }
         }
 
-        if (primeiraNOK == -1) primeiraNOK = 0;
+        if (primeiraNOK == -1){
+            primeiraNOK = 0;
+        }
         inputsInv.add(new InputsInvalidos(nLinhasOK, "paises.csv", nLinhasNOK, primeiraNOK));
         return true;
     }
@@ -108,7 +114,9 @@ public class Main {
             linhaAtual++;
 
             // Ignorar cabeçalho
-            if (linhaAtual == 1) continue;
+            if (linhaAtual == 1){
+                continue;
+            }
 
             String[] partes = linha.split(",");
 
@@ -137,11 +145,15 @@ public class Main {
                 nLinhasOK++;
             } else {
                 nLinhasNOK++;
-                if (primeiraNOK == -1) primeiraNOK = linhaAtual;
+                if (primeiraNOK == -1) {
+                    primeiraNOK = linhaAtual;
+                }
             }
         }
 
-        if (primeiraNOK == -1) primeiraNOK = 0;
+        if (primeiraNOK == -1) {
+            primeiraNOK = 0;
+        }
         inputsInv.add(new InputsInvalidos(nLinhasOK, "cidades.csv", nLinhasNOK, primeiraNOK));
         return true;
     }
@@ -164,7 +176,9 @@ public class Main {
             linhaAtual++;
 
             // Ignorar cabeçalho
-            if (linhaAtual == 1) continue;
+            if (linhaAtual == 1){
+                continue;
+            }
 
             String[] partes = linha.split(",");
 
@@ -190,11 +204,15 @@ public class Main {
                 nLinhasOK++;
             } else {
                 nLinhasNOK++;
-                if (primeiraNOK == -1) primeiraNOK = linhaAtual;
+                if (primeiraNOK == -1) {
+                    primeiraNOK = linhaAtual;
+                }
             }
         }
 
-        if (primeiraNOK == -1) primeiraNOK = 0;
+        if (primeiraNOK == -1){
+            primeiraNOK = 0;
+        }
         inputsInv.add(new InputsInvalidos(nLinhasOK, "populacao.csv", nLinhasNOK, primeiraNOK));
         return true;
     }
@@ -209,7 +227,9 @@ public class Main {
 
     static boolean repetidosPaises(int id) {
         for (Paises p : pais) {
-            if (p.id == id) return false;
+            if (p.id == id){
+                return false;
+            }
         }
         return true;
     }
@@ -233,17 +253,23 @@ public class Main {
     }
 
     static boolean idContidoPaises(String id) {
-        if (!verificarInteiro(id)) return false;
+        if (!verificarInteiro(id)) {
+            return false;
+        }
         int idValido = Integer.parseInt(id);
         for (Paises p : pais) {
-            if (p.id == idValido) return true;
+            if (p.id == idValido) {
+                return true;
+            }
         }
         return false;
     }
 
     static boolean cidadeNoPais(String alfa2) {
         for (Paises p : pais) {
-            if (Objects.equals(p.alfa2, alfa2.toUpperCase())) return true;
+            if (Objects.equals(p.alfa2, alfa2.toUpperCase())){
+                return true;
+            }
         }
         return false;
     }
