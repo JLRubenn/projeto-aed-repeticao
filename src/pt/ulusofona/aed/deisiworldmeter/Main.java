@@ -49,6 +49,7 @@ public class Main {
         int nLinhasNOK = 0;
         int primeiraNOK = -1; // -1 caso não exista nenhuma inválida
         int linhaAtual = 0;
+        boolean headerSkipped = false;
 
         try {
             scanner = new Scanner(file);
@@ -60,16 +61,30 @@ public class Main {
             String linha = scanner.nextLine();
             linhaAtual++;
 
-            // Ignorar cabeçalho
-            if (linhaAtual == 1) {
-                continue;
+            // Skip leading empty lines and then skip the first non-empty line (header)
+            if (!headerSkipped) {
+                if (linha.trim().isEmpty()) {
+                    continue; // still before header
+                } else {
+                    headerSkipped = true;
+                    continue; // skip header line
+                }
             }
 
-            String[] partes = linha.split(",");
+            // Remover BOM e preservar campos vazios no fim
+            linha = stripBOM(linha);
+            String[] partes = linha.split(",", -1);
+
+            // Trim all parts
+            for (int i = 0; i < partes.length; i++) {
+                if (partes[i] != null) {
+                    partes[i] = partes[i].trim();
+                }
+            }
 
             boolean valida = false;
             if (partes.length == 4 && verificarInteiro(partes[0])) {
-                int id = Integer.parseInt(partes[0]);
+                int id = Integer.parseInt(partes[0].trim());
                 valida = repetidosPaises(id);
                 if (valida) {
                     String alfa2 = partes[1];
@@ -83,13 +98,13 @@ public class Main {
                 nLinhasOK++;
             } else {
                 nLinhasNOK++;
-                if (primeiraNOK == -1){
+                if (primeiraNOK == -1) {
                     primeiraNOK = linhaAtual;
                 }
             }
         }
 
-        if (primeiraNOK == -1){
+        if (primeiraNOK == -1) {
             primeiraNOK = 0;
         }
         inputsInv.add(new InputsInvalidos(nLinhasOK, "paises.csv", nLinhasNOK, primeiraNOK));
@@ -102,6 +117,7 @@ public class Main {
         int nLinhasNOK = 0;
         int primeiraNOK = -1;
         int linhaAtual = 0;
+        boolean headerSkipped = false;
 
         try {
             scanner = new Scanner(file);
@@ -113,12 +129,26 @@ public class Main {
             String linha = scanner.nextLine();
             linhaAtual++;
 
-            // Ignorar cabeçalho
-            if (linhaAtual == 1){
-                continue;
+            // Skip leading empty lines and then skip the first non-empty line (header)
+            if (!headerSkipped) {
+                if (linha.trim().isEmpty()) {
+                    continue; // still before header
+                } else {
+                    headerSkipped = true;
+                    continue; // skip header line
+                }
             }
 
-            String[] partes = linha.split(",");
+            // Remover BOM e preservar campos vazios no fim
+            linha = stripBOM(linha);
+            String[] partes = linha.split(",", -1);
+
+            // Trim all parts
+            for (int i = 0; i < partes.length; i++) {
+                if (partes[i] != null) {
+                    partes[i] = partes[i].trim();
+                }
+            }
 
             boolean valida = false;
             if (partes.length == 6 &&
@@ -130,12 +160,12 @@ public class Main {
                     verificarDouble(partes[5]) &&
                     cidadeNoPais(partes[0])) {
 
-                String alfa2 = partes[0];
-                String nome = partes[1];
-                String regiao = partes[2];
-                double populacao = Double.parseDouble(partes[3]);
-                String latitude = partes[4];
-                String longitude = partes[5];
+                String alfa2 = partes[0].trim();
+                String nome = partes[1].trim();
+                String regiao = partes[2].trim();
+                double populacao = Double.parseDouble(partes[3].trim());
+                String latitude = partes[4].trim();
+                String longitude = partes[5].trim();
 
                 cidades.add(new Cidade(alfa2, nome, regiao, populacao, latitude, longitude));
                 valida = true;
@@ -164,6 +194,7 @@ public class Main {
         int nLinhasNOK = 0;
         int primeiraNOK = -1;
         int linhaAtual = 0;
+        boolean headerSkipped = false;
 
         try {
             scanner = new Scanner(file);
@@ -175,12 +206,26 @@ public class Main {
             String linha = scanner.nextLine();
             linhaAtual++;
 
-            // Ignorar cabeçalho
-            if (linhaAtual == 1){
-                continue;
+            // Skip leading empty lines and then skip the first non-empty line (header)
+            if (!headerSkipped) {
+                if (linha.trim().isEmpty()) {
+                    continue; // still before header
+                } else {
+                    headerSkipped = true;
+                    continue; // skip header line
+                }
             }
 
-            String[] partes = linha.split(",");
+            // Remover BOM e preservar campos vazios no fim
+            linha = stripBOM(linha);
+            String[] partes = linha.split(",", -1);
+
+            // Trim all parts
+            for (int i = 0; i < partes.length; i++) {
+                if (partes[i] != null) {
+                    partes[i] = partes[i].trim();
+                }
+            }
 
             boolean valida = false;
             if (partes.length == 5 &&
@@ -190,11 +235,11 @@ public class Main {
                     verificarInteiro(partes[3]) &&
                     verificarDouble(partes[4])) {
 
-                int id = Integer.parseInt(partes[0]);
-                int ano = Integer.parseInt(partes[1]);
-                int popMasc = Integer.parseInt(partes[2]);
-                int popFem = Integer.parseInt(partes[3]);
-                double densidade = Double.parseDouble(partes[4]);
+                int id = Integer.parseInt(partes[0].trim());
+                int ano = Integer.parseInt(partes[1].trim());
+                int popMasc = Integer.parseInt(partes[2].trim());
+                int popFem = Integer.parseInt(partes[3].trim());
+                double densidade = Double.parseDouble(partes[4].trim());
 
                 populacoes.add(new Populacao(id, ano, popMasc, popFem, densidade));
                 valida = true;
@@ -210,7 +255,7 @@ public class Main {
             }
         }
 
-        if (primeiraNOK == -1){
+        if (primeiraNOK == -1) {
             primeiraNOK = 0;
         }
         inputsInv.add(new InputsInvalidos(nLinhasOK, "populacao.csv", nLinhasNOK, primeiraNOK));
@@ -227,7 +272,7 @@ public class Main {
 
     static boolean repetidosPaises(int id) {
         for (Paises p : pais) {
-            if (p.id == id){
+            if (p.id == id) {
                 return false;
             }
         }
@@ -235,8 +280,11 @@ public class Main {
     }
 
     static boolean verificarInteiro(String valor) {
+        if (valor == null) {
+            return false;
+        }
         try {
-            Integer.parseInt(valor);
+            Integer.parseInt(valor.trim());
             return true;
         } catch (NumberFormatException e) {
             return false;
@@ -244,8 +292,11 @@ public class Main {
     }
 
     static boolean verificarDouble(String valor) {
+        if (valor == null) {
+            return false;
+        }
         try {
-            Double.parseDouble(valor);
+            Double.parseDouble(valor.trim());
             return true;
         } catch (NumberFormatException e) {
             return false;
@@ -256,7 +307,7 @@ public class Main {
         if (!verificarInteiro(id)) {
             return false;
         }
-        int idValido = Integer.parseInt(id);
+        int idValido = Integer.parseInt(id.trim());
         for (Paises p : pais) {
             if (p.id == idValido) {
                 return true;
@@ -266,74 +317,84 @@ public class Main {
     }
 
     static boolean cidadeNoPais(String alfa2) {
+        if (alfa2 == null) {
+            return false;
+        }
+        String a = alfa2.trim().toUpperCase();
         for (Paises p : pais) {
-            if (Objects.equals(p.alfa2, alfa2.toUpperCase())){
+            if (Objects.equals(p.alfa2, a)) {
                 return true;
             }
         }
         return false;
     }
 
+    // Helper to strip BOM from start of a line if present
+    static String stripBOM(String s) {
+        if (s == null) {
+            return null;
+        }
+        if (s.startsWith("\uFEFF")) {
+            return s.substring(1);
+        }
+        return s;
+    }
 
-// ... (restante do código)
+    public static void main(String[] args) {
+        System.out.println("Bem-Vindo ao DEISI World Meter");
 
-        public static void main(String[] args) {
-            System.out.println("Bem-Vindo ao DEISI World Meter");
+        long start = System.currentTimeMillis();
+        boolean parseOk = parseFiles(new File("test-files"));
+        if (!parseOk) {
+            System.out.println("Erro na leitura dos ficheiros!!");
+            return;
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("Ficheiros foram lidos com sucesso em " + (end - start) + " ms.");
 
-            long start = System.currentTimeMillis();
-            boolean parseOk = parseFiles(new File("test-files"));
-            if (!parseOk) {
-                System.out.println("Erro na leitura dos ficheiros!!");
-                return;
-            }
-            long end = System.currentTimeMillis();
-            System.out.println("Ficheiros foram lidos com sucesso em " + (end - start) + " ms.");
+        inputsInv = getObjects(TipoEntidade.INPUT_INVALIDO);
+        System.out.println();
+        System.out.println("Informacoes sobre a leitura dos ficheiros:");
 
-            inputsInv = getObjects(TipoEntidade.INPUT_INVALIDO);
-            System.out.println();
-            System.out.println("Informacoes sobre a leitura dos ficheiros:");
+        if (!inputsInv.isEmpty()) {
+            System.out.println("nome | linhas OK | linhas NOK | primeira linha NOK");
+            System.out.println(inputsInv.get(0));
+            System.out.println(inputsInv.get(1));
+            System.out.println(inputsInv.get(2));
+        } else {
+            System.out.println("Nenhuma informacao disponivel sobre inputs invalidos.");
+        }
 
-            if (!inputsInv.isEmpty()) {
-                System.out.println("nome | linhas OK | linhas NOK | primeira linha NOK");
-                System.out.println(inputsInv.get(0));
-                System.out.println(inputsInv.get(1));
-                System.out.println(inputsInv.get(2));
-            } else {
-                System.out.println("Nenhuma informacao disponivel sobre inputs invalidos.");
-            }
+        pais = getObjects(TipoEntidade.PAIS);
+        System.out.println();
+        System.out.println("Alguns paises:");
 
-            pais = getObjects(TipoEntidade.PAIS);
-            System.out.println();
-            System.out.println("Alguns paises:");
+        if (!pais.isEmpty()) {
+            System.out.println(pais.get(0));
+            System.out.println(pais.get(1));
+            System.out.println(pais.get(2));
+            System.out.println(pais.get(3));
+            System.out.println(pais.get(4));
+        } else {
+            System.out.println("Nenhum pais disponivel.");
+        }
 
-            if (!pais.isEmpty()) {
-                System.out.println(pais.get(0));
-                System.out.println(pais.get(1));
-                System.out.println(pais.get(2));
-                System.out.println(pais.get(3));
-                System.out.println(pais.get(4));
-            } else {
-                System.out.println("Nenhum pais disponivel.");
-            }
+        cidades = getObjects(TipoEntidade.CIDADE);
+        System.out.println();
+        System.out.println("Algumas cidades:");
 
-            cidades = getObjects(TipoEntidade.CIDADE);
-            System.out.println();
-            System.out.println("Algumas cidades:");
-
-            if (!cidades.isEmpty()) {
-                System.out.println(cidades.get(0));
-                System.out.println(cidades.get(1));
-                System.out.println(cidades.get(2));
-                System.out.println(cidades.get(3));
-                System.out.println(cidades.get(4));
-                System.out.println(cidades.get(5));
-                System.out.println(cidades.get(6));
-                System.out.println(cidades.get(7));
-                System.out.println(cidades.get(8));
-                System.out.println(cidades.get(9));
-            } else {
-                System.out.println("Nenhuma cidade disponivel.");
-            }
-        }}
-
-
+        if (!cidades.isEmpty()) {
+            System.out.println(cidades.get(0));
+            System.out.println(cidades.get(1));
+            System.out.println(cidades.get(2));
+            System.out.println(cidades.get(3));
+            System.out.println(cidades.get(4));
+            System.out.println(cidades.get(5));
+            System.out.println(cidades.get(6));
+            System.out.println(cidades.get(7));
+            System.out.println(cidades.get(8));
+            System.out.println(cidades.get(9));
+        } else {
+            System.out.println("Nenhuma cidade disponivel.");
+        }
+    }}
