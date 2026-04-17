@@ -27,7 +27,6 @@ public class Main {
         boolean leuCidades = lerCidades(fileCidades);
         boolean leuPopulacao = lerPopulacao(filePopulacao);
 
-        // Para IDs > 700, contar linhas de população desse país
         for (Paises p : pais) {
             if (p.id > 700) {
                 int nLinhas = 0;
@@ -47,7 +46,7 @@ public class Main {
         Scanner scanner;
         int nLinhasOK = 0;
         int nLinhasNOK = 0;
-        int primeiraNOK = -1; // -1 caso não exista nenhuma inválida
+        int primeiraNOK = -1;
         int linhaAtual = 0;
         boolean headerSkipped = false;
 
@@ -61,21 +60,18 @@ public class Main {
             String linha = scanner.nextLine();
             linhaAtual++;
 
-            // Skip leading empty lines and then skip the first non-empty line (header)
             if (!headerSkipped) {
                 if (linha.trim().isEmpty()) {
-                    continue; // still before header
+                    continue;
                 } else {
                     headerSkipped = true;
-                    continue; // skip header line
+                    continue;
                 }
             }
 
-            // Remover BOM e preservar campos vazios no fim
             linha = stripBOM(linha);
             String[] partes = linha.split(",", -1);
 
-            // Trim all parts
             for (int i = 0; i < partes.length; i++) {
                 if (partes[i] != null) {
                     partes[i] = partes[i].trim();
@@ -83,9 +79,15 @@ public class Main {
             }
 
             boolean valida = false;
-            if (partes.length == 4 && verificarInteiro(partes[0])) {
-                int id = Integer.parseInt(partes[0].trim());
+            if (partes.length == 4 &&
+                    verificarInteiro(partes[0]) &&
+                    !partes[1].isEmpty() &&
+                    !partes[2].isEmpty() &&
+                    !partes[3].isEmpty()) {
+
+                int id = Integer.parseInt(partes[0]);
                 valida = repetidosPaises(id);
+
                 if (valida) {
                     String alfa2 = partes[1];
                     String alfa3 = partes[2];
@@ -107,6 +109,7 @@ public class Main {
         if (primeiraNOK == -1) {
             primeiraNOK = 0;
         }
+
         inputsInv.add(new InputsInvalidos(nLinhasOK, "paises.csv", nLinhasNOK, primeiraNOK));
         return true;
     }
@@ -129,21 +132,18 @@ public class Main {
             String linha = scanner.nextLine();
             linhaAtual++;
 
-            // Skip leading empty lines and then skip the first non-empty line (header)
             if (!headerSkipped) {
                 if (linha.trim().isEmpty()) {
-                    continue; // still before header
+                    continue;
                 } else {
                     headerSkipped = true;
-                    continue; // skip header line
+                    continue;
                 }
             }
 
-            // Remover BOM e preservar campos vazios no fim
             linha = stripBOM(linha);
             String[] partes = linha.split(",", -1);
 
-            // Trim all parts
             for (int i = 0; i < partes.length; i++) {
                 if (partes[i] != null) {
                     partes[i] = partes[i].trim();
@@ -153,19 +153,18 @@ public class Main {
             boolean valida = false;
             if (partes.length == 6 &&
                     !partes[0].isEmpty() &&
-                    !partes[1].isEmpty() &&
-                    verificarInteiro(partes[2]) &&
+                    !partes[2].isEmpty() &&
                     verificarDouble(partes[3]) &&
                     verificarDouble(partes[4]) &&
                     verificarDouble(partes[5]) &&
                     cidadeNoPais(partes[0])) {
 
-                String alfa2 = partes[0].trim();
-                String nome = partes[1].trim();
-                String regiao = partes[2].trim();
-                double populacao = Double.parseDouble(partes[3].trim());
-                String latitude = partes[4].trim();
-                String longitude = partes[5].trim();
+                String alfa2 = partes[0];
+                String nome = partes[1];
+                String regiao = partes[2];
+                double populacao = Double.parseDouble(partes[3]);
+                String latitude = partes[4];
+                String longitude = partes[5];
 
                 cidades.add(new Cidade(alfa2, nome, regiao, populacao, latitude, longitude));
                 valida = true;
@@ -184,6 +183,7 @@ public class Main {
         if (primeiraNOK == -1) {
             primeiraNOK = 0;
         }
+
         inputsInv.add(new InputsInvalidos(nLinhasOK, "cidades.csv", nLinhasNOK, primeiraNOK));
         return true;
     }
@@ -206,21 +206,18 @@ public class Main {
             String linha = scanner.nextLine();
             linhaAtual++;
 
-            // Skip leading empty lines and then skip the first non-empty line (header)
             if (!headerSkipped) {
                 if (linha.trim().isEmpty()) {
-                    continue; // still before header
+                    continue;
                 } else {
                     headerSkipped = true;
-                    continue; // skip header line
+                    continue;
                 }
             }
 
-            // Remover BOM e preservar campos vazios no fim
             linha = stripBOM(linha);
             String[] partes = linha.split(",", -1);
 
-            // Trim all parts
             for (int i = 0; i < partes.length; i++) {
                 if (partes[i] != null) {
                     partes[i] = partes[i].trim();
@@ -235,11 +232,11 @@ public class Main {
                     verificarInteiro(partes[3]) &&
                     verificarDouble(partes[4])) {
 
-                int id = Integer.parseInt(partes[0].trim());
-                int ano = Integer.parseInt(partes[1].trim());
-                int popMasc = Integer.parseInt(partes[2].trim());
-                int popFem = Integer.parseInt(partes[3].trim());
-                double densidade = Double.parseDouble(partes[4].trim());
+                int id = Integer.parseInt(partes[0]);
+                int ano = Integer.parseInt(partes[1]);
+                int popMasc = Integer.parseInt(partes[2]);
+                int popFem = Integer.parseInt(partes[3]);
+                double densidade = Double.parseDouble(partes[4]);
 
                 populacoes.add(new Populacao(id, ano, popMasc, popFem, densidade));
                 valida = true;
@@ -258,15 +255,16 @@ public class Main {
         if (primeiraNOK == -1) {
             primeiraNOK = 0;
         }
+
         inputsInv.add(new InputsInvalidos(nLinhasOK, "populacao.csv", nLinhasNOK, primeiraNOK));
         return true;
     }
 
     static ArrayList getObjects(TipoEntidade tipo) {
         return switch (tipo) {
-            case PAIS -> pais;
-            case CIDADE -> cidades;
-            case INPUT_INVALIDO -> inputsInv;
+            case PAIS -> new ArrayList<>(pais);
+            case CIDADE -> new ArrayList<>(cidades);
+            case INPUT_INVALIDO -> new ArrayList<>(inputsInv);
         };
     }
 
@@ -329,7 +327,6 @@ public class Main {
         return false;
     }
 
-    // Helper to strip BOM from start of a line if present
     static String stripBOM(String s) {
         if (s == null) {
             return null;
@@ -397,4 +394,5 @@ public class Main {
         } else {
             System.out.println("Nenhuma cidade disponivel.");
         }
-    }}
+    }
+}
